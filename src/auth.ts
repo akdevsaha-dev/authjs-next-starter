@@ -42,9 +42,9 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
           }
         }
         if (!user.password) {
-          throw new Error(`account exist via ${user.accounts[0].provider}.`)
+          throw new Error(`Account exists via ${user.accounts?.[0]?.provider || "another provider"}.`)
         }
-        const isPasswordCorrect = bcrypt.compare(password, user.password)
+        const isPasswordCorrect = await bcrypt.compare(password, user.password)
         if (!isPasswordCorrect) {
           throw new Error("Invalid Password")
         }
@@ -57,4 +57,12 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
     Google,
     GitHub,
   ],
+  callbacks: {
+    session({ session, token }) {
+      if (session.user && token) {
+        session.user.id = token.id as string
+      }
+      return session;
+    }
+  }
 })
