@@ -129,7 +129,7 @@ export default function Page() {
               Already have an account?
             </span>
             <Link
-              href={"/login"}
+              href={"/signin"}
               className="text-sm font-semibold text-cyan-300 hover:text-cyan-200"
             >
               Sign in.
